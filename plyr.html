@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced YouTube Player</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app" class="app">
+        <!-- Miniplayer -->
+        <div id="miniplayer" class="miniplayer hidden">
+            <div class="miniplayer-video">
+                <video id="miniVideo" controls></video>
+                <button id="expandBtn" class="expand-btn">
+                    <i class="fas fa-expand"></i>
+                </button>
+            </div>
+            <div class="miniplayer-info">
+                <h4 id="miniTitle"></h4>
+                <p id="miniChannel"></p>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div id="mainContent" class="main-content">
+            <div class="container">
+                <div class="video-layout">
+                    <!-- Main Video Section -->
+                    <div class="video-section">
+                        <!-- Video Player -->
+                        <div class="video-container">
+                            <video id="mainVideo" controls>
+                                <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <button id="miniplayerBtn" class="miniplayer-btn">
+                                <i class="fas fa-compress"></i>
+                            </button>
+                        </div>
+
+                        <!-- Video Info -->
+                        <div class="video-info">
+                            <h1 id="videoTitle">Building the Future of Web Development with Next.js 14</h1>
+                            
+                            <!-- Channel Info and Actions -->
+                            <div class="video-meta">
+                                <div class="channel-info">
+                                    <img id="channelAvatar" src="/placeholder.svg?height=40&width=40" alt="Channel Avatar" class="channel-avatar">
+                                    <div class="channel-details">
+                                        <h3 id="channelName">TechTalks Pro</h3>
+                                        <p id="subscriberCount">2.1M subscribers</p>
+                                    </div>
+                                    <button id="subscribeBtn" class="subscribe-btn">
+                                        <i class="fas fa-bell"></i>
+                                        <span id="subscribeText">Subscribe</span>
+                                    </button>
+                                </div>
+
+                                <div class="action-buttons">
+                                    <div class="like-dislike-group">
+                                        <button id="likeBtn" class="action-btn like-btn">
+                                            <i class="fas fa-thumbs-up"></i>
+                                            <span id="likeCount">15.4K</span>
+                                        </button>
+                                        <div class="separator"></div>
+                                        <button id="dislikeBtn" class="action-btn dislike-btn">
+                                            <i class="fas fa-thumbs-down"></i>
+                                        </button>
+                                    </div>
+                                    
+                                    <button id="shareBtn" class="action-btn">
+                                        <i class="fas fa-share"></i>
+                                        <span>Share</span>
+                                    </button>
+                                    
+                                    <button class="action-btn">
+                                        <i class="fas fa-download"></i>
+                                        <span>Download</span>
+                                    </button>
+                                    
+                                    <button class="action-btn">
+                                        <i class="fas fa-ellipsis-h"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Description -->
+                            <div class="description-container">
+                                <div class="description-meta">
+                                    <span id="viewCount">1,234,567 views</span>
+                                    <span>•</span>
+                                    <span id="uploadDate">2 days ago</span>
+                                </div>
+                                <div id="description" class="description">
+                                    <p>In this comprehensive tutorial, we dive deep into Next.js 14 and explore all the new features that make it the best React framework for production applications.</p>
+                                    <br>
+                                    <p>We'll cover:</p>
+                                    <p>• App Router and Server Components</p>
+                                    <p>• Streaming and Suspense</p>
+                                    <p>• Server Actions and Forms</p>
+                                    <p>• Image and Font Optimization</p>
+                                    <p>• Performance improvements</p>
+                                    <p>• And much more!</p>
+                                    <br>
+                                    <p>Whether you're a beginner or an experienced developer, this video will help you understand how to build modern, fast, and scalable web applications.</p>
+                                    <br>
+                                    <p>🔗 Links mentioned in the video:</p>
+                                    <p>- Next.js Documentation: https://nextjs.org/docs</p>
+                                    <p>- GitHub Repository: https://github.com/example/nextjs-tutorial</p>
+                                    <p>- Discord Community: https://discord.gg/nextjs</p>
+                                    <br>
+                                    <p>⏰ Timestamps:</p>
+                                    <p>00:00 Introduction</p>
+                                    <p>02:15 Setting up Next.js 14</p>
+                                    <p>05:30 App Router Overview</p>
+                                    <p>12:45 Server Components</p>
+                                    <p>18:20 Client Components</p>
+                                    <p>25:10 Data Fetching</p>
+                                    <p>32:40 Styling with Tailwind</p>
+                                    <p>40:15 Deployment to Vercel</p>
+                                    <p>45:30 Conclusion</p>
+                                    <br>
+                                    <p>Don't forget to like and subscribe for more web development content!</p>
+                                </div>
+                                <button id="toggleDescription" class="toggle-description">
+                                    <span>Show more</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
+
+                            <!-- Comments Section -->
+                            <div class="comments-section">
+                                <div class="comments-header">
+                                    <h3><span id="commentCount">1,247</span> Comments</h3>
+                                    <div class="sort-comments">
+                                        <i class="fas fa-sort"></i>
+                                        <span>Sort by</span>
+                                    </div>
+                                </div>
+
+                                <!-- Add Comment -->
+                                <div class="add-comment">
+                                    <img src="/placeholder.svg?height=32&width=32" alt="Your Avatar" class="comment-avatar">
+                                    <div class="comment-input-container">
+                                        <input type="text" id="commentInput" placeholder="Add a comment..." class="comment-input">
+                                        <div id="commentActions" class="comment-actions hidden">
+                                            <button class="cancel-btn">Cancel</button>
+                                            <button class="comment-btn">Comment</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Comments List -->
+                                <div id="commentsList" class="comments-list">
+                                    <!-- Comments will be dynamically generated -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar -->
+                    <div class="sidebar">
+                        <!-- Category Bar -->
+                        <div class="category-bar">
+                            <button class="category-btn active" data-category="all">All</button>
+                            <button class="category-btn" data-category="music">Music</button>
+                            <button class="category-btn" data-category="gaming">Gaming</button>
+                            <button class="category-btn" data-category="news">News</button>
+                            <button class="category-btn" data-category="sports">Sports</button>
+                            <button class="category-btn" data-category="education">Education</button>
+                            <button class="category-btn" data-category="entertainment">Entertainment</button>
+                            <button class="category-btn" data-category="travel">Travel</button>
+                            <button class="category-btn" data-category="tech">Technology</button>
+                            <button class="category-btn" data-category="cooking">Cooking</button>
+                        </div>
+
+                        <!-- Related Videos -->
+                        <div class="related-videos">
+                            <div id="relatedVideosList" class="related-videos-list">
+                                <!-- Related videos will be dynamically generated -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Share Modal -->
+        <div id="shareModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Share</h3>
+                    <button id="closeShareModal" class="close-btn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="share-options">
+                        <div class="share-option">
+                            <i class="fab fa-facebook"></i>
+                            <span>Facebook</span>
+                        </div>
+                        <div class="share-option">
+                            <i class="fab fa-twitter"></i>
+                            <span>Twitter</span>
+                        </div>
+                        <div class="share-option">
+                            <i class="fab fa-whatsapp"></i>
+                            <span>WhatsApp</span>
+                        </div>
+                        <div class="share-option">
+                            <i class="fas fa-link"></i>
+                            <span>Copy link</span>
+                        </div>
+                    </div>
+                    <div class="share-input-group">
+                        <label>Video URL</label>
+                        <div class="input-with-copy">
+                            <input type="text" value="https://youtube.com/watch?v=example123" readonly>
+                            <button class="copy-btn">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="share-input-group">
+                        <label>Embed Code</label>
+                        <div class="input-with-copy">
+                            <input type="text" value='<iframe src="https://youtube.com/embed/example123"></iframe>' readonly>
+                            <button class="copy-btn">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class YouTubePlayer {
+  constructor() {
+    this.isMiniplayer = false
+    this.isSubscribed = false
+    this.isLiked = false
+    this.isDisliked = false
+    this.currentCategory = "all"
+    this.videoState = {
+      currentTime: 0,
+      paused: true,
+    }
+
+    this.init()
+    this.generateRelatedVideos()
+    this.generateComments()
+  }
+
+  init() {
+    this.bindEvents()
+    this.setupVideoSync()
+  }
+
+  bindEvents() {
+    // Miniplayer toggle
+    document.getElementById("miniplayerBtn").addEventListener("click", () => this.toggleMiniplayer())
+    document.getElementById("expandBtn").addEventListener("click", () => this.toggleMiniplayer())
+
+    // Subscribe button
+    document.getElementById("subscribeBtn").addEventListener("click", () => this.toggleSubscribe())
+
+    // Like/Dislike buttons
+    document.getElementById("likeBtn").addEventListener("click", () => this.toggleLike())
+    document.getElementById("dislikeBtn").addEventListener("click", () => this.toggleDislike())
+
+    // Share modal
+    document.getElementById("shareBtn").addEventListener("click", () => this.openShareModal())
+    document.getElementById("closeShareModal").addEventListener("click", () => this.closeShareModal())
+
+    // Description toggle
+    document.getElementById("toggleDescription").addEventListener("click", () => this.toggleDescription())
+
+    // Comment input
+    const commentInput = document.getElementById("commentInput")
+    commentInput.addEventListener("focus", () => this.showCommentActions())
+    commentInput.addEventListener("blur", (e) => {
+      if (!e.relatedTarget || !e.relatedTarget.closest(".comment-actions")) {
+        this.hideCommentActions()
+      }
+    })
+
+    // Category buttons
+    document.querySelectorAll(".category-btn").forEach((btn) => {
+      btn.addEventListener("click", (e) => this.filterCategory(e.target.dataset.category))
+    })
+
+    // Copy buttons
+    document.querySelectorAll(".copy-btn").forEach((btn) => {
+      btn.addEventListener("click", (e) => this.copyToClipboard(e))
+    })
+
+    // Modal backdrop click
+    document.getElementById("shareModal").addEventListener("click", (e) => {
+      if (e.target.id === "shareModal") {
+        this.closeShareModal()
+      }
+    })
+  }
+
+  setupVideoSync() {
+    const mainVideo = document.getElementById("mainVideo")
+    const miniVideo = document.getElementById("miniVideo")
+
+    // Sync video state
+    ;[mainVideo, miniVideo].forEach((video) => {
+      video.addEventListener("timeupdate", () => {
+        this.videoState.currentTime = video.currentTime
+      })
+
+      video.addEventListener("play", () => {
+        this.videoState.paused = false
+      })
+
+      video.addEventListener("pause", () => {
+        this.videoState.paused = true
+      })
+    })
+  }
+
+  toggleMiniplayer() {
+    const mainContent = document.getElementById("mainContent")
+    const miniplayer = document.getElementById("miniplayer")
+    const mainVideo = document.getElementById("mainVideo")
+    const miniVideo = document.getElementById("miniVideo")
+
+    if (!this.isMiniplayer) {
+      // Switch to miniplayer
+      this.syncVideoState(mainVideo, miniVideo)
+      mainContent.style.display = "none"
+      miniplayer.classList.remove("hidden")
+
+      // Update miniplayer info
+      document.getElementById("miniTitle").textContent = document.getElementById("videoTitle").textContent
+      document.getElementById("miniChannel").textContent = document.getElementById("channelName").textContent
+
+      this.isMiniplayer = true
+    } else {
+      // Switch back to main player
+      this.syncVideoState(miniVideo, mainVideo)
+      miniplayer.classList.add("hidden")
+      mainContent.style.display = "block"
+
+      this.isMiniplayer = false
+    }
+  }
+
+  syncVideoState(fromVideo, toVideo) {
+    toVideo.src = fromVideo.src
+    toVideo.currentTime = fromVideo.currentTime
+
+    if (!fromVideo.paused) {
+      toVideo.play()
+    }
+  }
+
+  toggleSubscribe() {
+    const subscribeBtn = document.getElementById("subscribeBtn")
+    const subscribeText = document.getElementById("subscribeText")
+    const subscriberCount = document.getElementById("subscriberCount")
+
+    this.isSubscribed = !this.isSubscribed
+
+    if (this.isSubscribed) {
+      subscribeBtn.classList.add("subscribed")
+      subscribeText.textContent = "Subscribed"
+      subscriberCount.textContent = "2.11M subscribers"
+    } else {
+      subscribeBtn.classList.remove("subscribed")
+      subscribeText.textContent = "Subscribe"
+      subscriberCount.textContent = "2.1M subscribers"
+    }
+  }
+
+  toggleLike() {
+    const likeBtn = document.getElementById("likeBtn")
+    const dislikeBtn = document.getElementById("dislikeBtn")
+    const likeCount = document.getElementById("likeCount")
+
+    if (this.isLiked) {
+      this.isLiked = false
+      likeBtn.classList.remove("active")
+      likeCount.textContent = "15.4K"
+    } else {
+      this.isLiked = true
+      likeBtn.classList.add("active")
+      likeCount.textContent = "15.5K"
+
+      if (this.isDisliked) {
+        this.isDisliked = false
+        dislikeBtn.classList.remove("active")
+      }
+    }
+  }
+
+  toggleDislike() {
+    const likeBtn = document.getElementById("likeBtn")
+    const dislikeBtn = document.getElementById("dislikeBtn")
+    const likeCount = document.getElementById("likeCount")
+
+    if (this.isDisliked) {
+      this.isDisliked = false
+      dislikeBtn.classList.remove("active")
+    } else {
+      this.isDisliked = true
+      dislikeBtn.classList.add("active")
+
+      if (this.isLiked) {
+        this.isLiked = false
+        likeBtn.classList.remove("active")
+        likeCount.textContent = "15.4K"
+      }
+    }
+  }
+
+  openShareModal() {
+    document.getElementById("shareModal").classList.remove("hidden")
+    document.body.style.overflow = "hidden"
+  }
+
+  closeShareModal() {
+    document.getElementById("shareModal").classList.add("hidden")
+    document.body.style.overflow = "auto"
+  }
+
+  toggleDescription() {
+    const description = document.getElementById("description")
+    const toggleBtn = document.getElementById("toggleDescription")
+    const icon = toggleBtn.querySelector("i")
+    const text = toggleBtn.querySelector("span")
+
+    if (description.classList.contains("expanded")) {
+      description.classList.remove("expanded")
+      text.textContent = "Show more"
+      icon.className = "fas fa-chevron-down"
+    } else {
+      description.classList.add("expanded")
+      text.textContent = "Show less"
+      icon.className = "fas fa-chevron-up"
+    }
+  }
+
+  showCommentActions() {
+    document.getElementById("commentActions").classList.remove("hidden")
+  }
+
+  hideCommentActions() {
+    const commentInput = document.getElementById("commentInput")
+    if (!commentInput.value.trim()) {
+      document.getElementById("commentActions").classList.add("hidden")
+    }
+  }
+
+  filterCategory(category) {
+    this.currentCategory = category
+
+    // Update active button
+    document.querySelectorAll(".category-btn").forEach((btn) => {
+      btn.classList.remove("active")
+    })
+    document.querySelector(`[data-category="${category}"]`).classList.add("active")
+
+    // Filter videos
+    const videos = document.querySelectorAll(".related-video")
+    videos.forEach((video) => {
+      const videoCategory = video.dataset.category
+      if (category === "all" || videoCategory === category) {
+        video.classList.remove("hidden")
+      } else {
+        video.classList.add("hidden")
+      }
+    })
+  }
+
+  copyToClipboard(e) {
+    const input = e.target.closest(".input-with-copy").querySelector("input")
+    input.select()
+    document.execCommand("copy")
+
+    // Show feedback
+    const originalIcon = e.target.innerHTML
+    e.target.innerHTML = '<i class="fas fa-check"></i>'
+    setTimeout(() => {
+      e.target.innerHTML = originalIcon
+    }, 1000)
+  }
+
+  generateRelatedVideos() {
+    const videos = [
+      {
+        title: "React 18 New Features Explained in Detail",
+        channel: "CodeMaster",
+        channelIcon: "/placeholder.svg?height=16&width=16",
+        views: "890K",
+        time: "1 week ago",
+        duration: "15:42",
+        thumbnail: "/placeholder.svg?height=94&width=168",
+        category: "tech",
+      },
+      {
+        title: "TypeScript Best Practices for 2024",
+        channel: "DevTips",
+        channelIcon: "/placeholder.svg?height=16&width=16",
+        views: "456K",
+        time: "3 days ago",
+        duration: "22:18",
+        thumbnail: "/placeholder.svg?height=94&width=168",
+        category: "tech",
+      },
+      {
+        title: "Building Full-Stack Apps with Supabase",
+        channel: "WebDev Pro",
+        channelIcon: "/placeholder.svg?height=16&width=16",
+        views: "234K",
+        time: "5 days ago",
+        duration: "35:27",
+        thumbnail: "/placeholder.svg?height=94&width=168",
+        category: "tech",
+      },
+      {
+        title: "CSS Grid vs Flexbox: Complete Guide",
+        channel: "DesignCode",
+        channelIcon: "/placeholder.svg?height=16&width=16",
+        views: "678K",
+        time: "1 week ago",
+        duration: "18:33",
+        thumbnail: "/placeholder.svg?height=94&width=168",
+        category: "tech",
+      },
+      {
+        title: "Top 10 Gaming Moments of 2024",
+        channel: "GameHub",
+        channelIcon: "/placeholder.svg?height=16&width=16",
+        views: "1.2M",
+        time: "2 days ago",
+        duration: "12:45",
+        thumbnail: "/placeholder.svg?height=94&width=168",
+        category: "gaming",
+      },
+      {
+        title: "Epic Gaming Setup Tour 2024",
+        channel: "TechGamer",
+        channelIcon: "/placeholder.svg?height=16&width=16",
+        views: "543K",
+        time: "4 days ago",
+        duration: "16:22",
+        thumbnail: "/placeholder.svg?height=94&width=168",
+        category: "gaming",
+      },
+      {
+        title: "Latest Music Hits Compilation",
+        channel: "MusicVibes",
+        channelIcon: "/placeholder.svg?height=16&width=16",
+        views: "2.1M",
+        time: "1 day ago",
+        duration: "45:30",
+        thumbnail: "/placeholder.svg?height=94&width=168",
+        category: "music",
+      },
+      {
+        title: "Behind the Scenes: Music Production",
+        channel: "StudioSecrets",
+        channelIcon: "/placeholder.svg?height=16&width=16",
+        views: "321K",
+        time: "6 days ago",
+        duration: "28:15",
+        thumbnail: "/placeholder.svg?height=94&width=168",
+        category: "music",
+      },
+      {
+        title: "Breaking News: Tech Industry Updates",
+        channel: "NewsToday",
+        channelIcon: "/placeholder.svg?height=16&width=16",
+        views: "789K",
+        time: "3 hours ago",
+        duration: "8:45",
+        thumbnail: "/placeholder.svg?height=94&width=168",
+        category: "news",
+      },
+      {
+        title: "World Sports Highlights This Week",
+        channel: "SportsCentral",
+        channelIcon: "/placeholder.svg?height=16&width=16",
+        views: "1.5M",
+        time: "2 days ago",
+        duration: "24:18",
+        thumbnail: "/placeholder.svg?height=94&width=168",
+        category: "sports",
+      },
+      {
+        title: "Learn JavaScript in 30 Minutes",
+        channel: "EduTech",
+        channelIcon: "/placeholder.svg?height=16&width=16",
+        views: "445K",
+        time: "1 week ago",
+        duration: "32:10",
+        thumbnail: "/placeholder.svg?height=94&width=168",
+        category: "education",
+      },
+      {
+        title: "Comedy Special: Best Moments",
+        channel: "LaughHub",
+        channelIcon: "/placeholder.svg?height=16&width=16",
+        views: "892K",
+        time: "3 days ago",
+        duration: "19:55",
+        thumbnail: "/placeholder.svg?height=94&width=168",
+        category: "entertainment",
+      },
+      {
+        title: "Amazing Travel Destinations 2024",
+        channel: "WanderlustTV",
+        channelIcon: "/placeholder.svg?height=16&width=16",
+        views: "667K",
+        time: "5 days ago",
+        duration: "26:40",
+        thumbnail: "/placeholder.svg?height=94&width=168",
+        category: "travel",
+      },
+      {
+        title: "Quick & Easy Pasta Recipes",
+        channel: "ChefMaster",
+        channelIcon: "/placeholder.svg?height=16&width=16",
+        views: "334K",
+        time: "4 days ago",
+        duration: "14:25",
+        thumbnail: "/placeholder.svg?height=94&width=168",
+        category: "cooking",
+      },
+    ]
+
+    const container = document.getElementById("relatedVideosList")
+
+    videos.forEach((video) => {
+      const videoElement = document.createElement("div")
+      videoElement.className = "related-video"
+      videoElement.dataset.category = video.category
+
+      videoElement.innerHTML = `
+                <div class="video-thumbnail">
+                    <img src="${video.thumbnail}" alt="${video.title}">
+                    <span class="video-duration">${video.duration}</span>
+                </div>
+                <div class="video-details">
+                    <h4 class="video-title">${video.title}</h4>
+                    <div class="video-channel">
+                        <img src="${video.channelIcon}" alt="${video.channel}" class="channel-icon">
+                        <span class="channel-name">${video.channel}</span>
+                    </div>
+                    <div class="video-stats">
+                        <span>${video.views} views</span>
+                        <span>•</span>
+                        <span>${video.time}</span>
+                    </div>
+                </div>
+            `
+
+      container.appendChild(videoElement)
+    })
+  }
+
+  generateComments() {
+    const comments = [
+      {
+        author: "WebDevNinja",
+        avatar: "/placeholder.svg?height=32&width=32",
+        content:
+          "This is exactly what I needed! The explanation of Server Components is crystal clear. Thanks for the amazing content! 🔥",
+        likes: 127,
+        time: "2 hours ago",
+      },
+      {
+        author: "ReactFan2024",
+        avatar: "/placeholder.svg?height=32&width=32",
+        content:
+          "Great tutorial! Could you make a follow-up video about authentication with NextAuth? That would be super helpful.",
+        likes: 89,
+        time: "5 hours ago",
+      },
+      {
+        author: "CodeNewbie",
+        avatar: "/placeholder.svg?height=32&width=32",
+        content:
+          "I'm just starting with React. Is this too advanced for beginners? Should I watch some other videos first?",
+        likes: 45,
+        time: "1 day ago",
+      },
+      {
+        author: "FullStackDev",
+        avatar: "/placeholder.svg?height=32&width=32",
+        content:
+          "Amazing explanation of the App Router! I've been struggling with this concept and your video made it so much clearer. Subscribed! 👍",
+        likes: 203,
+        time: "1 day ago",
+      },
+      {
+        author: "TechEnthusiast",
+        avatar: "/placeholder.svg?height=32&width=32",
+        content: "The timestamps are super helpful. Love how organized your content is. Keep up the great work!",
+        likes: 67,
+        time: "2 days ago",
+      },
+    ]
+
+    const container = document.getElementById("commentsList")
+
+    comments.forEach((comment) => {
+      const commentElement = document.createElement("div")
+      commentElement.className = "comment"
+
+      commentElement.innerHTML = `
+                <img src="${comment.avatar}" alt="${comment.author}" class="comment-avatar">
+                <div class="comment-content">
+                    <div class="comment-header">
+                        <span class="comment-author">${comment.author}</span>
+                        <span class="comment-time">${comment.time}</span>
+                    </div>
+                    <div class="comment-text">${comment.content}</div>
+                    <div class="comment-actions-bar">
+                        <button class="comment-action like-comment">
+                            <i class="fas fa-thumbs-up"></i>
+                            <span>${comment.likes}</span>
+                        </button>
+                        <button class="comment-action">
+                            <i class="fas fa-thumbs-down"></i>
+                        </button>
+                        <button class="comment-action">Reply</button>
+                    </div>
+                </div>
+            `
+
+      container.appendChild(commentElement)
+    })
+
+    // Add event listeners for comment actions
+    container.addEventListener("click", (e) => {
+      if (e.target.closest(".like-comment")) {
+        const btn = e.target.closest(".like-comment")
+        btn.classList.toggle("liked")
+      }
+    })
+  }
+}
+
+// Initialize the YouTube Player when DOM is loaded
+document.addEventListener("DOMContentLoaded", () => {
+  new YouTubePlayer()
+})
+
+// Add some utility functions
+function formatNumber(num) {
+  if (num >= 1000000) {
+    return (num / 1000000).toFixed(1) + "M"
+  }
+  if (num >= 1000) {
+    return (num / 1000).toFixed(1) + "K"
+  }
+  return num.toString()
+}
+
+function timeAgo(date) {
+  const now = new Date()
+  const diffTime = Math.abs(now - date)
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+
+  if (diffDays === 1) return "1 day ago"
+  if (diffDays < 7) return `${diffDays} days ago`
+  if (diffDays < 30) return `${Math.floor(diffDays / 7)} week${Math.floor(diffDays / 7) > 1 ? "s" : ""} ago`
+  return `${Math.floor(diffDays / 30)} month${Math.floor(diffDays / 30) > 1 ? "s" : ""} ago`
+}
+
+    </script>
+</body>
+</html>
