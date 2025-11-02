@@ -1,4 +1,14 @@
 [
+        {
+        "video_url": "https://smrta384und.com/play/tt0455760",
+        "thumbnail_url": "https://i.ytimg.com/vi/g6sLVAAcxpE/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&amp;rs=AOn4CLDtrMw3xO2Aatp-3g2WDv7wfId_dg",
+        "title": "Dead Silence | 2007",
+        "channel_name": "Global News",
+        "channel_icon": "XtarNet..gif",
+        "views": "2M views",
+        "duration": "15:10",
+        "category": "cr"
+    },
     {
         "video_url": "https://smrta384und.com/play/tt9100018",
         "thumbnail_url": "https://i.ytimg.com/vi/zjQFG9bHFDI/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&amp;rs=AOn4CLDvDFPvq9cd7Rxmpm1MrSS3DkwnKw",
@@ -9,6 +19,9 @@
         "duration": "01:20",
         "category": "bd"
     },
+
+
+
     {
         "video_url": "https://www.youtube.com/embed/q_ujS--O1Cg?si=ZraGG14HFgO0R7FT",
         "thumbnail_url": "HD-wallpaper-loki-season-2-coming-loki-season-2-loki-tv-shows-superheroes-artist-artwork-digital-art-tom-hiddleston.jpg",
@@ -122,3 +135,4 @@
     
 
 ]
+
