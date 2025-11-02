@@ -331,6 +331,19 @@
             padding: 20px;
             font-size: 16px;
         }
+        .unsupported-message {
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            font-size: 16px;
+            background: #111;
+            border-radius: 10px;
+            margin: 10px;
+        }
+        .unsupported-message a {
+            color: #ff0000;
+            text-decoration: underline;
+        }
         .scroll-line-container {
             position: absolute;
             top: 10px;
@@ -490,8 +503,13 @@
             display: none;
         }
 
-        video {
+        video, iframe {
             border: 1px solid #0e0e0ef1;
+            width: 100%;
+            max-height: 425px;
+            min-height: 425px;
+            border-radius: 10px;
+            background: #000;
         }
         .video-info {
             padding: 10px 0;
@@ -686,7 +704,7 @@
 
 
 
-  .foldable-page video {
+  .foldable-page video, .foldable-page iframe {
             width: 100%;
             max-height: 425px;
             min-height: 425px;
@@ -841,7 +859,7 @@
             .video-player-section {
                 padding: 10px 0;
             }
-            .foldable-page video {
+            .foldable-page video, .foldable-page iframe {
                 max-height: 35vh;
             }
             .related-videos {
@@ -977,7 +995,7 @@
     <div id="foldablePage" class="foldable-page folded">
         <div class="content">
             <div class="video-player-section">
-                <video class="v1" id="videoPlayer" controls></video>
+                <div id="videoPlayerContainer"></div>
                 <div class="video-info">
                     <h1 class="video-title" id="videoTitle"></h1>
                     <div class="video-meta">
@@ -1044,7 +1062,7 @@
         const foldablePage = document.getElementById('foldablePage');
         const foldBtn = document.getElementById('foldBtn');
         const unfoldBtn = document.getElementById('unfoldBtn');
-        const videoPlayer = document.getElementById('videoPlayer');
+        const videoPlayerContainer = document.getElementById('videoPlayerContainer');
         const videoTitle = document.getElementById('videoTitle');
         const viewsDate = document.getElementById('viewsDate');
         const likeBtn = document.getElementById('likeBtn');
@@ -1059,6 +1077,7 @@
         const descriptionText = document.getElementById('descriptionText');
         const toggleDescription = document.getElementById('toggleDescription');
         const relatedVideos = document.getElementById('relatedVideos');
+        const subscribeBtn = document.getElementById('subscribeBtn');
         const allSuggestions = [
             "search liked videos on youtube",
             "search like nastya",
@@ -1083,6 +1102,13 @@
         const scrollSpeed = 20;
         const wheelScrollSpeed = 0.8;
         let isLoading = false;
+
+        // Function to extract YouTube video ID
+        function extractYouTubeId(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
 
         // New function for profile click
         function handleProfileClick() {
@@ -1192,7 +1218,6 @@
 
         function loadVideo(video) {
             currentVideo = video;
-            videoPlayer.src = video.video_url;
             videoTitle.textContent = video.title;
             viewsDate.textContent = `${video.views} • ${video.upload_date || 'Unknown Date'}`;
             channelIconLarge.src = video.channel_icon;
@@ -1202,15 +1227,49 @@
             likeBtn.querySelector('span').textContent = video.likes || 0;
             dislikeBtn.querySelector('span').textContent = video.dislikes || 0;
             videoLink.value = video.video_url;
-            embedCode.value = `<iframe width="560"  src="${video.video_url}" frameborder="0" allowfullscreen></iframe>`;
+            embedCode.value = getEmbedCode(video.video_url);
             subscribeBtn.classList.remove('subscribed');
             subscribeBtn.textContent = 'Subscribe';
             likeBtn.classList.remove('active');
             dislikeBtn.classList.remove('active');
             descriptionText.classList.remove('expanded');
             toggleDescription.textContent = 'Show More';
-            videoPlayer.play();
+            renderPlayer(video.video_url);
             renderRelatedVideos();
+        }
+
+        function getEmbedCode(url) {
+            if (url.includes('youtube.com') || url.includes('youtu.be')) {
+                const id = extractYouTubeId(url);
+                if (id) {
+                    return `<iframe width="560" height="315" src="https://www.youtube.com/embed/${id}" frameborder="0" allowfullscreen></iframe>`;
+                }
+            }
+            // Fallback for other URLs
+            return `<iframe width="560" height="315" src="${url}" frameborder="0" allowfullscreen ></iframe>`;
+        }
+
+        function renderPlayer(url) {
+            videoPlayerContainer.innerHTML = '';
+            let playerHtml;
+            const ytId = extractYouTubeId(url);
+            const allowAttributes = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+            if (ytId) {
+                playerHtml = `<iframe width="100%" height="425" src="https://www.youtube.com/embed/${ytId}" frameborder="0" allow="${allowAttributes}" allowfullscreen sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>`;
+            } else if (url.endsWith('.mp4')) {
+                playerHtml = `<video controls width="100%" height="425"><source src="${url}" type="video/mp4">Your browser does not support the video tag.</video>`;
+            } else if (url.endsWith('.mkv')) {
+                playerHtml = `<div class="unsupported-message">MKV format is not natively supported in web browsers for direct playback. <a href="${url}" download>Download the video</a> to play in a compatible media player (e.g., VLC), or convert it to MP4 format for web playback.</div>`;
+            } else {
+                // For other streaming URLs, use iframe with enhanced permissions
+                playerHtml = `<iframe width="100%" height="425" src="${url}" frameborder="0" allow="${allowAttributes}" allowfullscreen  sandbox="allow-scripts allow-same-origin allow-forms allow-pointer-lock allow-top-navigation"></iframe>`;
+            }
+            videoPlayerContainer.innerHTML = playerHtml;
+            // Attempt to play if it's a video element
+            const videoElem = videoPlayerContainer.querySelector('video');
+            if (videoElem) {
+                videoElem.play().catch(e => console.log('Autoplay prevented:', e));
+            }
         }
 
 function renderRelatedVideos() {
@@ -1645,7 +1704,9 @@ function renderRelatedVideos() {
                 foldBtn.style.display = 'none';
                 unfoldBtn.style.display = 'block';
                 setSidebarState();
-                videoPlayer.pause();
+                // Pause video if possible
+                const videoElem = videoPlayerContainer.querySelector('video');
+                if (videoElem) videoElem.pause();
             });
             unfoldBtn.addEventListener('click', () => {
                 foldablePage.classList.remove('folded');
